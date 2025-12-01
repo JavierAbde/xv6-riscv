@@ -15,7 +15,6 @@ r_mhartid()
 #define MSTATUS_MPP_M (3L << 11)
 #define MSTATUS_MPP_S (1L << 11)
 #define MSTATUS_MPP_U (0L << 11)
-#define MSTATUS_MIE (1L << 3)    // machine-mode interrupt enable.
 
 static inline uint64
 r_mstatus()
@@ -80,7 +79,6 @@ w_sip(uint64 x)
 // Supervisor Interrupt Enable
 #define SIE_SEIE (1L << 9) // external
 #define SIE_STIE (1L << 5) // timer
-#define SIE_SSIE (1L << 1) // software
 static inline uint64
 r_sie()
 {
@@ -179,14 +177,16 @@ static inline uint64
 r_stimecmp()
 {
   uint64 x;
-  asm volatile("csrr %0, stimecmp" : "=r" (x) );
+  // asm volatile("csrr %0, stimecmp" : "=r" (x) );
+  asm volatile("csrr %0, 0x14d" : "=r" (x) );
   return x;
 }
 
 static inline void 
 w_stimecmp(uint64 x)
 {
-  asm volatile("csrw stimecmp, %0" : : "r" (x));
+  // asm volatile("csrw stimecmp, %0" : : "r" (x));
+  asm volatile("csrw 0x14d, %0" : : "r" (x));
 }
 
 // Machine Environment Configuration Register
@@ -194,14 +194,16 @@ static inline uint64
 r_menvcfg()
 {
   uint64 x;
-  asm volatile("csrr %0, menvcfg" : "=r" (x) );
+  // asm volatile("csrr %0, menvcfg" : "=r" (x) );
+  asm volatile("csrr %0, 0x30a" : "=r" (x) );
   return x;
 }
 
 static inline void 
 w_menvcfg(uint64 x)
 {
-  asm volatile("csrw menvcfg, %0" : : "r" (x));
+  // asm volatile("csrw menvcfg, %0" : : "r" (x));
+  asm volatile("csrw 0x30a, %0" : : "r" (x));
 }
 
 // Physical Memory Protection
